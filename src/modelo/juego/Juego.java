@@ -8,7 +8,7 @@ public class Juego {
 	private int minJugadores;
 	private int maxJugadores;
 	private int edadMinima;
-	private int esDificil;
+	private int esDificil; // 1-5
 	private String estado;
 	public Juego (String nombre, int anioPublicacion, String empresa, String categoria, int minJugadores, int maxJugadores, int edadMinima, int esDificil, String estado) {
 		 this.nombre = nombre;
