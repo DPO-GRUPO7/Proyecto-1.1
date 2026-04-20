@@ -1,29 +1,27 @@
 package modelo.producto;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Pasteleria extends itemVendible {
 
-public class Pasteleria {
+	private boolean esAlergeno;
 
-    private String nombre;
-    private double precio;
-    private List<String> alergenos;
+	public Pasteleria(int idItem, String nombre, double precioBase, boolean esAlergeno) {
+		super(idItem, nombre, precioBase);
+		this.esAlergeno = esAlergeno;
+	}
 
-    public Pasteleria( String nombre, double precio) {
-        this.nombre = nombre;
-        this.precio = precio;
-        this.alergenos = new ArrayList<>();
-    }
+	@Override
+	public double getPrecioFinal() {
+		// TODO Auto-generated method stub
+		return getPrecioBase();
+	}
 
-    public void agregarAlergeno(String alergeno) {
-        alergenos.add(alergeno);
-    }
+	public boolean isEsAlergeno() {
+		return esAlergeno;
+	}
 
-    public boolean tieneAlergeno(String alergeno) {
-        return alergenos.contains(alergeno);
-    }
+	public void setEsAlergeno(boolean esAlergeno) {
+		this.esAlergeno = esAlergeno;
+	}
 
-    public double getPrecio() {
-        return precio;
-    }
+	
 }

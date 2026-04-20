@@ -21,7 +21,7 @@ public class CopiaJuego {
         return uso.equals("VENTA") && estado.equals("BUENO");
     }
 
-    public double getPrecioVenta() {
+    public double getPrecioventa() {
         return precioVenta;
     }
 

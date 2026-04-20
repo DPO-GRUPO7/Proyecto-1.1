@@ -3,45 +3,87 @@ package modelo.venta;
 import java.util.ArrayList;
 import java.util.List;
 
-import modelo.producto.Bebida;
-import modelo.producto.Pasteleria;
+
 import modelo.juego.CopiaJuego;
 import modelo.usuario.Cliente;
+import modelo.usuario.Usuario;
+import modelo.producto.itemVendible;
+
 
 public class Venta {
 
-    private List<Object> items;
+    private List<itemVendible> items;
+    private List<CopiaJuego> juegosVendidos;
     private double propina; // porcentaje (0.1 = 10%)
     private double total;
-    private Cliente cliente;
+    private Usuario cliente;
 
-    public Venta(Cliente cliente) {
+    public Venta(Usuario cliente) {
         this.items = new ArrayList<>();
+        this.juegosVendidos = new ArrayList<>();
         this.propina = 0.10; // sugerida
         this.cliente = cliente;
     }
+    
+    public List<itemVendible> getItems() {
+		return items;
+	}
 
-    public void agregarItem(Object item) {
+	public void setItems(List<itemVendible> items) {
+		this.items = items;
+	}
+
+	public List<CopiaJuego> getJuegosVendidos() {
+		return juegosVendidos;
+	}
+
+	public void setJuegosVendidos(List<CopiaJuego> juegosVendidos) {
+		this.juegosVendidos = juegosVendidos;
+	}
+
+	public Usuario getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Usuario cliente) {
+		this.cliente = cliente;
+	}
+
+	public double getPropina() {
+		return propina;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public void agregarItem(itemVendible item) {
         items.add(item);
+    }
+    // Agregamos juegos
+    public void agregarJuego(CopiaJuego juego) {
+       
+        if (juego.aptoParaVenta()) {
+            juegosVendidos.add(juego);
+        } else {
+            System.out.println("Este juego es solo para préstamos en mesa.");
+        }
     }
 
     
     public double calcularSubtotal() {
         double subtotal = 0;
-
-        for (Object item : items) {
-
-            if (item instanceof Bebida) {
-                subtotal += ((Bebida) item).getPrecio();
-            } 
-            else if (item instanceof Pasteleria) {
-                subtotal += ((Pasteleria) item).getPrecio();
-            } 
-            else if (item instanceof CopiaJuego) {
-                subtotal += ((CopiaJuego) item).getPrecioVenta();
-            }
+        
+        // Sumamos los productos de la cafetería
+        for (itemVendible item : items) {
+            subtotal += item.getPrecioBase(); 
         }
-
+        
+        // Sumamos los juegos físicos (usando el precioVenta de tu UML)
+        for (CopiaJuego juego : juegosVendidos) {
+            subtotal += juego.getPrecioventa(); 
+        }
+        
         return subtotal;
     }
 
@@ -49,18 +91,16 @@ public class Venta {
     public double calcularImpuestos() {
         double impuestos = 0;
 
-        for (Object item : items) {
-
-            if (item instanceof Bebida) {
-                impuestos += ((Bebida) item).getPrecio() * 0.08;
-            } 
-            else if (item instanceof Pasteleria) {
-                impuestos += ((Pasteleria) item).getPrecio() * 0.08;
-            }
+        for (itemVendible item : items) {
+        	impuestos += ((itemVendible) item).getPrecioFinal() * 0.08;
+          
         }
-
+        for (CopiaJuego juego : juegosVendidos) {
+            impuestos += juego.getPrecioventa() * 0.19;
+        }
         return impuestos;
     }
+
 
     // propina
     public double calcularPropina() {
@@ -75,10 +115,12 @@ public class Venta {
 
     // puntos
     public void generarPuntos() {
-        double puntos = calcularTotal() * 0.01;
-        cliente.acumularPuntos(puntos);
+       
+        if (this.cliente instanceof Cliente) {
+            double puntos = calcularTotal() * 0.01;
+            ((Cliente) this.cliente).acumularPuntos(puntos);
+        }
     }
-
     // (por si el cliente la cambia)
     public void setPropina(double propina) {
         this.propina = propina;

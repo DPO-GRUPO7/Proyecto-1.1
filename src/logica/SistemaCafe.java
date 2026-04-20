@@ -3,32 +3,40 @@ package logica;
 import java.util.ArrayList;
 import java.util.List;
 
-import modelo.usuario.Cliente;
+import modelo.usuario.Usuario;
 import modelo.venta.Venta;
+import persistencia.Persistencia;
 import modelo.prestamo.Prestamo;
 import modelo.juego.CopiaJuego;
 import modelo.cafe.Mesa;
 
 public class SistemaCafe {
 
-    private List<Cliente> clientes;
+    private List<Usuario> Usuarios;
     private List<Venta> ventas;
     private List<Prestamo> prestamos;
     private List<CopiaJuego> inventarioJuegos;
 
     public SistemaCafe() {
-        clientes = new ArrayList<>();
+        Usuarios = new ArrayList<>();
         ventas = new ArrayList<>();
         prestamos = new ArrayList<>();
         inventarioJuegos = new ArrayList<>();
     }
-
-    public void agregarCliente(Cliente cliente) {
-        clientes.add(cliente);
+    public List<Usuario> getUsuarios() {
+        return this.Usuarios;
+        
+       
+    }
+    public void setUsuarios(List<Usuario> usuariosRecuperados) {
+        this.Usuarios = usuariosRecuperados;
+    }
+    public void agregarCliente(Usuario cliente) {
+        Usuarios.add(cliente);
     }
 
-    public Cliente buscarCliente(String login) {
-        for (Cliente c : clientes) {
+    public Usuario buscarCliente(String login) {
+        for (Usuario c : Usuarios) {
             if (c.getLogin().equals(login)) {
                 return c;
             }
@@ -37,8 +45,8 @@ public class SistemaCafe {
     }
 
 
-    public Venta crearVenta(Cliente cliente) {
-        return new Venta(cliente);
+    public Venta crearVenta(Usuario usuario) {
+        return new Venta(usuario);
     }
 
     public void registrarVenta(Venta venta) {
@@ -83,12 +91,15 @@ public class SistemaCafe {
         return false;
     }
 
-
     public void guardarDatos() {
-        
+    
+        Persistencia p = new Persistencia("data/", "usuarios.json", "juegos.json", "ventas.json");
+        p.guardarEstadoCompleto(this);
     }
 
     public void cargarDatos() {
-        
+   
+        Persistencia p = new Persistencia("data/", "usuarios.json", "juegos.json", "ventas.json");
+        p.cargarEstadoCompleto(this);
     }
 }
