@@ -103,7 +103,7 @@ public class Persistencia {
             JSONObject obj = new JSONObject();
             obj.put("total", v.getTotal());
             
-            obj.put("idCliente", v.getCliente().getId()); 
+            obj.put("idComprador", v.getComprador().getId()); 
             obj.put("numItems", v.getItems().size());
             obj.put("numJuegos", v.getJuegosVendidos().size());
 

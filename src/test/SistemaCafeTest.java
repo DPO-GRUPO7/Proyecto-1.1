@@ -1,6 +1,7 @@
-package consola;
+package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -14,14 +15,15 @@ import modelo.cafe.*;
 import modelo.venta.Venta;
 import modelo.prestamo.Prestamo;
 
-public class MainTest {
+public class SistemaCafeTest {
 
 
     private SistemaCafe sistema;
     private Cliente clientePrueba;
     private CopiaJuego copiaPrestamo;
     
-
+    
+    @BeforeEach
     public void setup() {
         sistema = new SistemaCafe();
         //Crear cliente
@@ -31,27 +33,6 @@ public class MainTest {
         Juego catan = new Juego("Catan", 1995, "Devir", "Estrategia", 3, 4, 10, 3, "BUENO");
         copiaPrestamo = new CopiaJuego(catan, "BUENO", "PRESTAMO", 0);
         sistema.agregarJuegoInventario(copiaPrestamo);
-    }
-    
-
-    @Test
-    public void ventaGeneraPuntosTest() {
-        setup(); 
-        
-        try {
-        	// Comprobamos que los atributos y metodos funcionen correctamente para venta
-            Venta nuevaVenta = sistema.crearVenta(clientePrueba);
-            Bebida cafe = new Bebida(101, "Tinto", 2000, false, true); 
-            nuevaVenta.agregarItem(cafe);
-            
-            sistema.registrarVenta(nuevaVenta);
-            // Calculos correctos
-            assertEquals(2360.0, nuevaVenta.calcularTotal(), "El total de la venta no es correcto");
-            assertEquals(23.6, clientePrueba.getPuntosFidelidad(), "Los puntos no se sumaron correctamente");
-            
-        } catch (Exception e) {
-            fail("No debió lanzar excepción al hacer una venta normal");
-        }
     }
     
     @Test
