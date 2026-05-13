@@ -21,7 +21,7 @@ public class Venta {
     public Venta(Usuario comprador) {
         this.items = new ArrayList<>();
         this.juegosVendidos = new ArrayList<>();
-        this.propina = 0.10; // sugerida
+        this.propina = 0.10; 
         this.comprador = comprador;
     }
     
