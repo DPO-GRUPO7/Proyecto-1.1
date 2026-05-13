@@ -33,6 +33,14 @@ public class Juego {
 	        return esDificil >= 4;
 	    }
 
+	    public int getMaxJugadores() {
+	        return maxJugadores;
+	    }
+
+	    public int getMinJugadores() {
+	        return minJugadores;
+	    }
+
 	    public String getNombre() {
 	        return nombre;
 	    }

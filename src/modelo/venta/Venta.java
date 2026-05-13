@@ -16,13 +16,13 @@ public class Venta {
     private List<CopiaJuego> juegosVendidos;
     private double propina; // porcentaje (0.1 = 10%)
     private double total;
-    private Usuario cliente;
+    private Usuario comprador;
 
-    public Venta(Usuario cliente) {
+    public Venta(Usuario comprador) {
         this.items = new ArrayList<>();
         this.juegosVendidos = new ArrayList<>();
         this.propina = 0.10; // sugerida
-        this.cliente = cliente;
+        this.comprador = comprador;
     }
     
     public List<itemVendible> getItems() {
@@ -41,12 +41,12 @@ public class Venta {
 		this.juegosVendidos = juegosVendidos;
 	}
 
-	public Usuario getCliente() {
-		return cliente;
+	public Usuario getComprador() {
+		return comprador;
 	}
 
-	public void setCliente(Usuario cliente) {
-		this.cliente = cliente;
+	public void setComprador(Usuario comprador) {
+		this.comprador = comprador;
 	}
 
 	public double getPropina() {
@@ -116,9 +116,9 @@ public class Venta {
     // puntos
     public void generarPuntos() {
        
-        if (this.cliente instanceof Cliente) {
+        if (this.comprador instanceof Cliente) {
             double puntos = calcularTotal() * 0.01;
-            ((Cliente) this.cliente).acumularPuntos(puntos);
+            ((Cliente) this.comprador).acumularPuntos(puntos);
         }
     }
     // (por si el cliente la cambia)
