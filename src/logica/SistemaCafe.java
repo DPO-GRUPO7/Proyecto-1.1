@@ -215,4 +215,12 @@ public class SistemaCafe {
         Persistencia p = new Persistencia("data/", "usuarios.json", "juegos.json", "ventas.json");
         p.cargarEstadoCompleto(this);
     }
+    public Juego buscarJuegoPorNombre(String nombre) {
+        for (CopiaJuego copia : inventarioJuegos) {
+            if (copia.getJuego().getNombre().equalsIgnoreCase(nombre)) {
+                return copia.getJuego();
+            }
+        }
+        return null;
+    }
 }
