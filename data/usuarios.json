@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "password": "123",
+        "id": 1,
+        "login": "123",
+        "puntos": 0,
+        "nombre": "Santiago",
+        "rol": "Cliente"
+    },
+    {
+        "password": "123",
+        "id": 2,
+        "login": "Queque",
+        "puntos": 0,
+        "nombre": "Que",
+        "rol": "Cliente"
+    }
+]

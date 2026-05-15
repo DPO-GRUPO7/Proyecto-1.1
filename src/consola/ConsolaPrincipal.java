@@ -23,71 +23,146 @@ public class ConsolaPrincipal {
         boolean continuar = true;
 
         while (continuar) {
-            System.out.println("\n----- BOARD GAME CAFE -----");
+            System.out.println("\n===== BOARD GAME CAFÉ =====");
             System.out.println("1. Iniciar sesión");
+            System.out.println("2. Registrarme como cliente");
             System.out.println("0. Salir");
             System.out.print("Opción: ");
 
             int opcion = leerEntero();
 
-            if (opcion == 1) {
-                iniciarSesion();
-            } else if (opcion == 0) {
-                sistema.guardarDatos();
-                continuar = false;
-                System.out.println("Hasta luego.");
-            } else {
-                System.out.println("Opción inválida.");
+            switch (opcion) {
+                case 1: iniciarSesion(); break;
+                case 2: registrarCliente(); break;
+                case 0:
+                    sistema.guardarDatos();
+                    continuar = false;
+                    System.out.println("Hasta luego.");
+                    break;
+                default:
+                    System.out.println("Opción inválida.");
             }
         }
     }
 
     private void iniciarSesion() {
-        System.out.print("Login: ");
-        String login = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
-        Usuario usuario = autenticar(login, password);
+        int intentos = 0;
+        while (intentos < 3) {
+            System.out.print("Login: ");
+            String login = scanner.nextLine().trim();
+            System.out.print("Contraseña: ");
+            String password = scanner.nextLine().trim();
 
-        if (usuario == null) {
-            System.out.println("Credenciales inválidas.");
-            return;
+            Usuario usuario = autenticar(login, password);
+
+            if (usuario != null) {
+                System.out.println("Bienvenido/a, " + usuario.getNombre() + "!");
+                redirigir(usuario);
+                return;
+            }
+
+            intentos++;
+            int restantes = 3 - intentos;
+            if (restantes > 0) {
+                System.out.println("Credenciales inválidas. Intentos restantes: " + restantes);
+            } else {
+                System.out.println("Demasiados intentos fallidos. Volviendo al menú principal.");
+            }
         }
-        System.out.println("Bienvenido/a " + usuario.getNombre());
+    }
 
+    private void registrarCliente() {
+        System.out.println("\n--- Registro de nuevo cliente ---");
+
+        System.out.print("Nombre completo: ");
+        String nombre = leerTextoNoVacio();
+
+        String login;
+        while (true) {
+            System.out.print("Login (único): ");
+            login = leerTextoNoVacio();
+            if (sistema.buscarCliente(login) == null) break;
+            System.out.println("Ese login ya está en uso. Elige otro.");
+        }
+
+        System.out.print("Contraseña: ");
+        String password = leerTextoNoVacio();
+
+        int nuevoId = sistema.getUsuarios().size() + 1;
+        Cliente nuevoCliente = new Cliente(nuevoId, nombre, login, password);
+        sistema.agregarCliente(nuevoCliente);
+
+        System.out.println("Cuenta creada exitosamente. Ya puedes iniciar sesión.");
+    }
+
+    private void redirigir(Usuario usuario) {
         if (usuario instanceof Administrador) {
-            ConsolaAdministrador consolaAdmin = new ConsolaAdministrador(sistema, scanner);
-            consolaAdmin.ejecutar((Administrador) usuario);
+            new ConsolaAdministrador(sistema, scanner).ejecutar((Administrador) usuario);
         } else if (usuario instanceof Cliente) {
-            ConsolaCliente consolaCliente = new ConsolaCliente(sistema, scanner);
-            consolaCliente.ejecutar((Cliente) usuario);
+            new ConsolaCliente(sistema, scanner).ejecutar((Cliente) usuario);
         } else if (usuario instanceof Empleado) {
-            ConsolaEmpleado consolaEmpleado = new ConsolaEmpleado(sistema, scanner);
-            consolaEmpleado.ejecutar((Empleado) usuario);
+            new ConsolaEmpleado(sistema, scanner).ejecutar((Empleado) usuario);
         }
     }
 
     private Usuario autenticar(String login, String password) {
         for (Usuario u : sistema.getUsuarios()) {
-            if (u.autenticar(login, password)) {
-                return u;
-            }
+            if (u.autenticar(login, password)) return u;
         }
         return null;
     }
 
-    private int leerEntero() {
+    // ── Helpers de lectura ────────────────────────────────────────────────
+
+    int leerEntero() {
         while (true) {
             try {
-                return Integer.parseInt(scanner.nextLine());
+                return Integer.parseInt(scanner.nextLine().trim());
             } catch (Exception e) {
                 System.out.print("Ingrese un número válido: ");
             }
         }
     }
 
+    int leerEntero(int min, int max) {
+        while (true) {
+            int v = leerEntero();
+            if (v >= min && v <= max) return v;
+            System.out.print("Ingrese un número entre " + min + " y " + max + ": ");
+        }
+    }
+
+    double leerDouble() {
+        while (true) {
+            try {
+                double v = Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
+                if (v >= 0) return v;
+                System.out.print("Ingrese un valor positivo: ");
+            } catch (Exception e) {
+                System.out.print("Ingrese un número válido: ");
+            }
+        }
+    }
+
+    String leerTextoNoVacio() {
+        while (true) {
+            String s = scanner.nextLine().trim();
+            if (!s.isEmpty()) return s;
+            System.out.print("El campo no puede estar vacío: ");
+        }
+    }
+
+    boolean leerSiNo(String mensaje) {
+        while (true) {
+            System.out.print(mensaje + " (s/n): ");
+            String r = scanner.nextLine().trim().toLowerCase();
+            if (r.equals("s")) return true;
+            if (r.equals("n")) return false;
+            System.out.print("Responda 's' o 'n': ");
+        }
+    }
+
     public static void main(String[] args) {
-        ConsolaPrincipal consola = new ConsolaPrincipal();
-        consola.ejecutar();
+        new ConsolaPrincipal().ejecutar();
     }
 }
