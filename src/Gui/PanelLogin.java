@@ -157,7 +157,7 @@ public class PanelLogin extends JPanel {
         JLabel lbl = new JLabel(texto);
         lbl.setFont(VentanaPrincipal.FUENTE_PEQUENA);
         lbl.setForeground(VentanaPrincipal.COLOR_TEXTO_TENUE);
-        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
         return lbl;
     }
 
@@ -170,8 +170,9 @@ public class PanelLogin extends JPanel {
         campo.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(VentanaPrincipal.COLOR_TEXTO_TENUE),
                 new EmptyBorder(8, 10, 8, 10)));
-        campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        campo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        campo.setMaximumSize(new Dimension(240, 40));
+        campo.setPreferredSize(new Dimension(240, 40));
+        campo.setAlignmentX(Component.CENTER_ALIGNMENT);
         return campo;
     }
 
@@ -184,21 +185,25 @@ public class PanelLogin extends JPanel {
         campo.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(VentanaPrincipal.COLOR_TEXTO_TENUE),
                 new EmptyBorder(8, 10, 8, 10)));
-        campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        campo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        campo.setMaximumSize(new Dimension(240, 40));
+        campo.setPreferredSize(new Dimension(240, 40));
+        campo.setAlignmentX(Component.CENTER_ALIGNMENT);
         return campo;
     }
 
     private JButton crearBoton(String texto, Color fondo, Color letra) {
-        JButton btn = new JButton(texto);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 14));
-        btn.setBackground(fondo);
-        btn.setForeground(letra);
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
-        return btn;
+    	JButton btn=new JButton(texto);
+    	btn.setFont(new Font("SansSerif", Font.BOLD, 14));
+    	btn.setBackground(fondo);
+    	btn.setForeground(letra);
+    	btn.setFocusPainted(false);
+    	btn.setBorderPainted(false);
+    	btn.setOpaque(true);
+    	btn.setContentAreaFilled(true);
+    	btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+    	btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    	btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+    	btn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
+    	return btn;
     }
 }

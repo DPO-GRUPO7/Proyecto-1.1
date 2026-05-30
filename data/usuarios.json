@@ -14,5 +14,20 @@
         "puntos": 0,
         "nombre": "Que",
         "rol": "Cliente"
+    },
+    {
+        "password": "admin",
+        "id": 3,
+        "login": "admin",
+        "nombre": "Sarita",
+        "rol": "Administrador"
+    },
+    {
+        "password": "mesero",
+        "id": 4,
+        "login": "mesero",
+        "nombre": "Juan",
+        "rol": "Mesero",
+        "disponible": true
     }
 ]

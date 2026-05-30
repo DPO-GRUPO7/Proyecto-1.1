@@ -27,7 +27,8 @@ public class VentanaPrincipal extends JFrame {
     // ── Estado ─────────────────────────────────────────────────────────
     private SistemaCafe sistema;
     private CardLayout cardLayout;
-    private JPanel contenedor;   
+    private JPanel contenedor;
+    private Usuario usuarioActual;
 
    
     public static final String TARJETA_LOGIN          = "LOGIN";
@@ -60,6 +61,7 @@ public class VentanaPrincipal extends JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
+            	sistema.guardarDatos();
                 dispose();
                 System.exit(0);
             }
@@ -78,9 +80,9 @@ public class VentanaPrincipal extends JFrame {
         contenedor.add(new PanelRegistro(this), TARJETA_REGISTRO);
 
         //Paneles persona 2-ADmin cliente empleado
-        contenedor.add(crearPlaceholder("Panel Administrador\n(Persona 2)"),   TARJETA_ADMIN);
-        contenedor.add(crearPlaceholder("Panel Cliente\n(Persona 2)"),         TARJETA_CLIENTE);
-        contenedor.add(crearPlaceholder("Panel Empleado\n(Persona 2)"),        TARJETA_EMPLEADO);
+        contenedor.add(new PanelAdministrador(this), TARJETA_ADMIN);
+        contenedor.add(new PanelCliente(this), TARJETA_CLIENTE);
+        contenedor.add(new PanelEmpleado(this), TARJETA_EMPLEADO);
 
         // Panel de gráficas — Persona 3
         contenedor.add(crearPlaceholder("Panel Gráficas\n(Persona 3)"),        TARJETA_GRAFICAS);
@@ -120,13 +122,20 @@ public class VentanaPrincipal extends JFrame {
 
 
     public void redirigirUsuario(Usuario usuario) {
-        if (usuario instanceof Administrador) {
+        this.usuarioActual=usuario;
+
+        if(usuario instanceof Administrador) {
             mostrarPanel(TARJETA_ADMIN);
-        } else if (usuario instanceof Cliente) {
+        }
+        else if(usuario instanceof Cliente) {
             mostrarPanel(TARJETA_CLIENTE);
-        } else if (usuario instanceof Empleado) {
+        }
+        else if(usuario instanceof Empleado) {
             mostrarPanel(TARJETA_EMPLEADO);
         }
+    }
+    public Usuario getUsuarioActual() {
+        return usuarioActual;
     }
 
     //  main 

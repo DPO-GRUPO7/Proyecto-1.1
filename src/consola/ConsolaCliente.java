@@ -15,7 +15,7 @@ import modelo.torneo.TorneoCompetitivo;
 import modelo.usuario.Cliente;
 import modelo.venta.Venta;
 
-public class ConsolaCliente extends ConsolaPrincipal {
+public class ConsolaCliente{
 
     private SistemaCafe sistema;
     private Scanner scanner;
@@ -258,5 +258,62 @@ public class ConsolaCliente extends ConsolaPrincipal {
             if (!visto) lista.add(c.getJuego());
         }
         return lista;
+    }
+    private int leerEntero() {
+    	while(true) {
+    		try {
+    			return Integer.parseInt(scanner.nextLine().trim());
+    		}
+    		catch(Exception e) {
+    			System.out.print("Ingrese un número válido: ");
+    		}
+    	}
+    }
+
+    private int leerEntero(int min, int max) {
+    	while(true) {
+    		int valor=leerEntero();
+    		if(valor>=min && valor<=max) {
+    			return valor;
+    		}
+    		System.out.print("Ingrese un número entre " + min + " y " + max + ": ");
+    	}
+    }
+
+    private double leerDouble() {
+    	while(true) {
+    		try {
+    			return Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
+    		}
+    		catch(Exception e) {
+    			System.out.print("Ingrese un número válido: ");
+    		}
+    	}
+    }
+
+    private String leerTextoNoVacio() {
+    	while(true) {
+    		String texto=scanner.nextLine().trim();
+    		if(!texto.isEmpty()) {
+    			return texto;
+    		}
+    		System.out.print("El campo no puede estar vacío: ");
+    	}
+    }
+
+    private boolean leerSiNo(String mensaje) {
+    	while(true) {
+    		System.out.print(mensaje + " (s/n): ");
+    		String respuesta=scanner.nextLine().trim().toLowerCase();
+
+    		if(respuesta.equals("s")) {
+    			return true;
+    		}
+    		else if(respuesta.equals("n")) {
+    			return false;
+    		}
+
+    		System.out.println("Responda s o n.");
+    	}
     }
 }
