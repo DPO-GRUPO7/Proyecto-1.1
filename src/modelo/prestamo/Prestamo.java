@@ -1,5 +1,6 @@
 package modelo.prestamo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,20 @@ public class Prestamo {
     private List<CopiaJuego> juegos;
     private boolean activo;
 
+    // NUEVO
+    private LocalDate fechaPrestamo;
+
     public Prestamo(Mesa mesa) {
         this.mesa = mesa;
         this.juegos = new ArrayList<>();
         this.activo = false;
+
+        // NUEVO
+        this.fechaPrestamo = LocalDate.now();
+    }
+
+    public LocalDate getFechaPrestamo() {
+        return fechaPrestamo;
     }
 
     public void agregarJuego(CopiaJuego juego) {
@@ -23,27 +34,27 @@ public class Prestamo {
     }
 
     public boolean validarRestricciones() {
+
         for (CopiaJuego copia : juegos) {
 
-            // 1. Debe estar disponible
             if (!copia.estaDisponible()) {
                 return false;
             }
 
-            // 2. Debe ser para préstamo
             if (!copia.getUso().equals("PRESTAMO")) {
                 return false;
             }
 
-            // 3. Validar con la mesa
             if (!mesa.esAptaParaJuego(copia.getJuego())) {
                 return false;
             }
         }
+
         return true;
     }
 
     public void iniciarPrestamo() {
+
         if (validarRestricciones()) {
             this.activo = true;
         }

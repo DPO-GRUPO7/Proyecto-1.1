@@ -1,3 +1,6 @@
-/Gui/
 /consola/
 /logica/
+/modelo/
+/persistencia/
+/test/
+/Gui/

@@ -261,37 +261,43 @@ public class SistemaCafe {
 
  //devuelve las ventas netas (sin impuestos) de cafetería y juegos
 
- public java.util.Map<String, double[]> getVentasPorRango(java.time.LocalDate fechaInicio) {
-     double[] cafeteria = new double[5];
-     double[] juegos    = new double[5];
+ public Map<String, double[]> getVentasPorRango(LocalDate fechaInicio) {
 
+	    double[] cafeteria = new double[5];
+	    double[] juegos = new double[5];
 
-     java.util.List<modelo.venta.Venta> todasVentas = consultarVentas();
-     for (int i = 0; i < todasVentas.size(); i++) {
-         modelo.venta.Venta v = todasVentas.get(i);
-         int dia = i % 5;
+	    for (Venta v : ventas) {
 
-         // Subtotal cafetería (items vendibles sin impuestos)
-         double subCafe = 0;
-         for (modelo.producto.itemVendible item : v.getItems()) {
-             subCafe += item.getPrecioBase();
-         }
+	        LocalDate fechaVenta = v.getFecha();
 
-         // Subtotal juegos (sin impuestos)
-         double subJuegos = 0;
-         for (modelo.juego.CopiaJuego copia : v.getJuegosVendidos()) {
-             subJuegos += copia.getPrecioventa();
-         }
+	        if (!fechaVenta.isBefore(fechaInicio)
+	                && !fechaVenta.isAfter(fechaInicio.plusDays(4))) {
 
-         cafeteria[dia] += subCafe;
-         juegos[dia]    += subJuegos;
-     }
+	            int indice = (int) java.time.temporal.ChronoUnit.DAYS
+	                    .between(fechaInicio, fechaVenta);
 
-     java.util.Map<String, double[]> resultado = new java.util.LinkedHashMap<>();
-     resultado.put("cafeteria", cafeteria);
-     resultado.put("juegos",    juegos);
-     return resultado;
- }
+	            double totalCafe = 0;
+	            for (modelo.producto.itemVendible item : v.getItems()) {
+	                totalCafe += item.getPrecioBase();
+	            }
+
+	            double totalJuegos = 0;
+	            for (modelo.juego.CopiaJuego copia : v.getJuegosVendidos()) {
+	                totalJuegos += copia.getPrecioventa();
+	            }
+
+	            cafeteria[indice] += totalCafe;
+	            juegos[indice] += totalJuegos;
+	        }
+	    }
+
+	    Map<String, double[]> resultado = new LinkedHashMap<>();
+
+	    resultado.put("cafeteria", cafeteria);
+	    resultado.put("juegos", juegos);
+
+	    return resultado;
+	}
 
  
  public String[] getEtiquetasDias(java.time.LocalDate fechaInicio) {
@@ -310,23 +316,26 @@ public class SistemaCafe {
  //Devuelve el número de préstamos (reservas) activos por día de la semana.
 
  public int[] getReservasPorSemana() {
-     
-     int[] conteos = new int[7];
-     java.util.Random rng = new java.util.Random(prestamos.size());
-     for (int i = 0; i < 7; i++) {
-        
-         conteos[i] = prestamos.size() + rng.nextInt(10);
-     }
-     return conteos;
- }
+
+	    int[] conteos = new int[7];
+
+	    LocalDate hoy = LocalDate.now();
+	    LocalDate inicioSemana = hoy.minusDays(6);
+
+	    for (Prestamo p : prestamos) {
+
+	        LocalDate fecha = p.getFechaPrestamo();
+
+	        if (!fecha.isBefore(inicioSemana)
+	                && !fecha.isAfter(hoy)) {
+
+	            int indice = fecha.getDayOfWeek().getValue() - 1;
+
+	            conteos[indice]++;
+	        }
+	    }
+
+	    return conteos;
+	}
 
 }
-
-
-
-
-
-
-
-
-

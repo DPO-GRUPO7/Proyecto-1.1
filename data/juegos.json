@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "uso": "VENTA",
+        "juegoBase": {
+            "edadMinima": 10,
+            "nombre": "Catan"
+        },
+        "estado": "BUENO",
+        "precioVenta": 90000
+    },
+    {
+        "uso": "PRESTAMO",
+        "juegoBase": {
+            "edadMinima": 10,
+            "nombre": "Catan"
+        },
+        "estado": "BUENO",
+        "precioVenta": 0
+    }
+]

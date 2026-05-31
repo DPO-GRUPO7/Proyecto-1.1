@@ -10,6 +10,8 @@ import modelo.usuario.Administrador;
 import modelo.usuario.Cliente;
 import modelo.usuario.Empleado;
 import modelo.usuario.Usuario;
+import modelo.juego.*;
+import modelo.venta.*;
 
 
 public class VentanaPrincipal extends JFrame {
@@ -42,7 +44,38 @@ public class VentanaPrincipal extends JFrame {
     public VentanaPrincipal() {
         sistema = new SistemaCafe();
         sistema.cargarDatos();
+        
+        modelo.juego.Juego juego =
+                new modelo.juego.Juego(
+                        "Catan",
+                        1995,
+                        "Devir",
+                        "Estrategia",
+                        3,
+                        4,
+                        10,
+                        2,
+                        "BUENO"
+                );
 
+        modelo.juego.CopiaJuego copia1 =
+                new modelo.juego.CopiaJuego(
+                        juego,
+                        "BUENO",
+                        "VENTA",
+                        90000
+                );
+
+        modelo.juego.CopiaJuego copia2 =
+                new modelo.juego.CopiaJuego(
+                        juego,
+                        "BUENO",
+                        "PRESTAMO",
+                        0
+                );
+
+        sistema.agregarJuegoInventario(copia1);
+        sistema.agregarJuegoInventario(copia2);
         configurarVentana();
         inicializarPaneles();
         mostrarPanel(TARJETA_LOGIN);
@@ -85,7 +118,7 @@ public class VentanaPrincipal extends JFrame {
         contenedor.add(new PanelEmpleado(this), TARJETA_EMPLEADO);
 
         // Panel de gráficas — Persona 3
-        contenedor.add(crearPlaceholder("Panel Gráficas\n(Persona 3)"),        TARJETA_GRAFICAS);
+        contenedor.add(new PanelGraficas(sistema), TARJETA_GRAFICAS);
     }
 
 
